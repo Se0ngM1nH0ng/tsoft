@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: HongSeongMin
@@ -10,8 +9,6 @@
 <html>
 <head>
     <title>로그인 성공시</title>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-
 </head>
 <body>
 <h1>로그인에 성공 하셨습니다.</h1>
@@ -27,30 +24,30 @@
 <a href="/admin">관리자 페이지로 이동</a> <br> <br>
 
 <script>
-   function buttonClick(buttonName){
-       const roleData = {
-           role: buttonName // 버튼의 name 속성 값을 사용자의 역할로 지정
-       };
+    function buttonClick(buttonName){
+        const roleData = {
+            role: buttonName // 버튼의 name 속성 값을 사용자의 역할로 지정
+        };
 
-       // 서버로 데이터를 전송하는 fetch 함수
-       fetch('/changeRole', {
-           method : 'POST',
-           headers : {
-             'Content-Type': 'application/json' // JSON 형식으로 전달한다.
-           },
-           body : JSON.stringify(roleData) // JSON 데이터를 문자열로 변환하여 body에 담아 전송
-       })
-           .then(response => response.text()) // 서버로부터 받은 응답을 텍스트로 변환
-           .then(data => {
-               if (data === 'success') {
-                   alert('변경되었습니다 ! 다시 로그인 해주세요 !')
-                   window.location.href = '/logout'; // 성공적인 응답을 받았을 때 로그아웃 URL로 이동
+        // 서버로 데이터를 전송하는 fetch 함수
+        fetch('/changeRole', {
+            method : 'POST',
+            headers : {
+                'Content-Type': 'application/json' // JSON 형식으로 전달한다.
+            },
+            body : JSON.stringify(roleData) // JSON 데이터를 문자열로 변환하여 body에 담아 전송
+        })
+            .then(response => response.text()) // 서버로부터 받은 응답을 텍스트로 변환
+            .then(data => {
+                if (data === 'success') {
+                    alert('변경되었습니다 ! 다시 로그인 해주세요 !')
+                    window.location.href = '/logout'; // 성공적인 응답을 받았을 때 로그아웃 URL로 이동
 
-               }
-           })
-           .catch(error => console.error('Error', error)); // 요청 과정에서 발생한 에러 처리
+                }
+            })
+            .catch(error => console.error('Error', error)); // 요청 과정에서 발생한 에러 처리
 
-   }
+    }
 </script>
 
 </body>
