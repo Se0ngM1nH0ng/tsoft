@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.biz.order.InterfaceOrderDAO">
+    <select id="selectAll" resultType="com.example.biz.order.OrderDTO">
+        SELECT * FROM ORDER
+    </select>
+    <select id="selectOne" resultType="com.example.biz.order.OrderDTO">
+        SELECT * FROM ORDER O LEFT JOIN MEMBER M ON O.M_ID = M.M_ID WHERE O_NUM =#{data1}
+    </select>
+    <select id="selectOne_login" resultType="com.example.biz.order.OrderDTO">
+        SELECT * FROM MEMBER WHERE M_ID=#{data1} AND M_PW=#{data2}
+    </select>
+    <insert id="insert" parameterType="com.example.biz.order.OrderDTO">
+        INSERT INTO MEMBER (M_ID, M_PW , M_NAME) VALUES (#{data1},#{data2},#{data3})
+    </insert>
+    <update id="update" parameterType="com.example.biz.order.OrderDTO">
+        UPDATE MEMBER SET M_PW=#{data1} WHERE M_ID=#{data2}
+    </update>
+    <delete id="delete" parameterType="com.example.biz.order.OrderDTO">
+        DELETE FROM MEMBER WHERE M_ID =#{param1}
+    </delete>
+
+</mapper>

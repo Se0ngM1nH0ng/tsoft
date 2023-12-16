@@ -1,0 +1,52 @@
+장바구니 CART
+
+장바구니 목록 출력 SelectAll 
+장바구니 물품 중 한개 선택 SelectOne 
+         (상품번호 PRODUCT의 P_NUM과 JOIN)
+
+장바구니 추가 INSERT 
+ INSERT INTO ( C_NUM, M_ID, P_NUM, C_CNT) VALUES ( ?,?,?,?)
+
+장바구니 삭제 DELETE 
+장바구니 해당 물품 삭제 
+DELETE FROM CART WHERE C_NUM =? 장바구니 번호에 따라 
+
+=========================================
+
+상품 PRODUCT 
+
+상품 목록 출력 SELECT ALL 
+상품을 선택했을때 SELECT ONE
+상품을 등록 할 때 ( 관리자 모드 ) INSERT 
+상품을 삭제 할 때 (  관리자 모드 ) DELETE 
+
+
+=========================================
+
+주문 ORDER
+
+주문 목록 출력 SELECT ALL 
+구매 내역에 그 날의 구매한 상품들 SELECT ONE
+주문한 내역 작성  INSERT
+주문 내역 삭제 
+
+=========================================
+
+주문 상세 ORDERDETAIL
+
+그 날짜에 구매한 상품들 출력 SELECT ALL
+그중 하나를 선택해서 어떤 물품인지 본다 SELECT ONE 
+주문을 하게 되면 그 상품은 몇개를 구매한건지 INSERT 
+해당 선택한  상품에 대해 구매 내역 삭제 DELETE 
+
+=========================================
+
+회원 MEMBER 
+
+회원 목록 출력 SELECT ALL 
+로그인시 DB에 저장된 정보인지 SELECT ONE 
+회원가입시 중복검사 SELECT ONE
+회원가입 INSERT 
+회원탈퇴 DELETE 
+
+=========================================

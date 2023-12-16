@@ -1,0 +1,24 @@
+### 중복검사 후 회원가입
+POST http://localhost:8080/signup
+Content-Type: application/json
+Accept: */*
+
+{
+  "mid": "tjdals",
+  "mpw": "1234",
+  "mname": "sung",
+  "sk": "ASDF"
+}
+
+### 전체 출력 list
+GET http://localhost:8080/list
+Content-Type: application/json
+
+### 로그인 성공 여부
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "mid": "tjdals",
+  "mpw": "1234"
+}

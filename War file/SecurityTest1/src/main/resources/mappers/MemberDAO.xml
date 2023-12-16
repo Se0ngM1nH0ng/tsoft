@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.securitytest1.dto.InterfaceMemberDAO">
+
+    <select id="selectOne" resultType="com.example.securitytest1.dto.MemberDTO">
+        SELECT * FROM MEMBER WHERE M_ID=#{data1}
+    </select>
+    <select id="selectOne_login" resultType="com.example.securitytest1.dto.MemberDTO">
+        SELECT * FROM MEMBER WHERE M_ID=#{data1} AND M_PW=#{data2}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.biz.cart.InterfaceCartDAO">
+    <select id="selectAll" resultType="com.example.biz.cart.CartDTO">
+        SELECT * FROM CART
+    </select>
+    <select id="selectOne" resultType="com.example.biz.cart.CartDTO"> <!--장바구니 상품 한개 고르기 -->
+        SELECT * FROM CART C LEFT JOIN PRODUCT P ON C.P_NUM = P.P_NUM WHERE C.C_NUM = #{data1}
+    </select>
+    <insert id="insert" parameterType="com.example.biz.cart.CartDTO">
+        INSERT INTO CART (C_NUM, M_ID, P_NUM,C_CNT) VALUES (#{cNum},#{mId},#{pNum},#{cCnt})
+    </insert>
+
+    <delete id="delete" parameterType="com.example.biz.cart.CartDTO">
+        DELETE FROM CART WHERE C_NUM = #{param1}
+    </delete>
+
+</mapper>
