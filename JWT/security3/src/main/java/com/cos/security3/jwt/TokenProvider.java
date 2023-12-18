@@ -1,8 +1,8 @@
 package com.cos.security3.jwt;
 
-import com.cos.security3.config.auth.PrincipalDetails;
 import com.cos.security3.config.auth.PrincipalDetailsService;
 import com.cos.security3.model.MemberDTO;
+import com.cos.security3.model.MemberRoleDTO;
 import com.cos.security3.model.TokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.xml.crypto.dsig.Transform;
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -33,13 +35,13 @@ public class TokenProvider {
     private static final long CREATE_TOKEN_EXPIRE_TIME = 1000 * 60; // 1분 ms단위
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 ; // 1일
     private Key key; // Security 안에 있다.
-    private final PrincipalDetailsService principalDetailsService;
+    private final UserDetailsService userDetailsService;
 
     public TokenProvider(@Value("${jwt.secret}") String secret,
-                        PrincipalDetailsService principalDetailsService){
+                         UserDetailsService userDetailsService){
         byte[] keyBytest = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytest);
-        this.principalDetailsService = principalDetailsService;
+        this.userDetailsService = userDetailsService;
     }
 
 
@@ -58,7 +60,11 @@ public class TokenProvider {
 
     // 토큰 생성 메서드
     public TokenDTO generateTokenDTO(MemberDTO mDTO){
-       // 회원 아이디를 Subject 라는 클레임으로 토큰에 추가 한다.
+        List<String> roles = new ArrayList<>();
+        for(MemberRoleDTO mRole : mDTO.getMRole()){
+            roles.add(mRole.getAuthority().getAuthorityName());
+        }
+        // 회원 아이디를 Subject 라는 클레임으로 토큰에 추가 한다.
         Claims claims = Jwts.claims().setSubject(mDTO.getMId());
 
         // 회원의 권한을 "auth" 라는 클래임으로 토큰에 추가 한다.
@@ -81,7 +87,7 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        return new TokenDTO(BEARER_TYPE, mDTO.getMId(), createToken, refreshToken, createTokenExpiresIn.getTime());
+        return new TokenDTO(BEARER_TYPE, mDTO.getMCode(), createToken, refreshToken, createTokenExpiresIn.getTime());
     }
 
     public String getMid(String token){
@@ -109,9 +115,9 @@ public class TokenProvider {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
-        PrincipalDetails principalDetails = (PrincipalDetails) principalDetailsService.loadUserByUsername(this.getMid(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getMid(token));
 
-        return new UsernamePasswordAuthenticationToken(principalDetails, "", principalDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     public Claims getAuth(String token){

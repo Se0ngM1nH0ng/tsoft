@@ -12,15 +12,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @Controller
 @AllArgsConstructor
+@RequestMapping("/security")
 public class IndexController {
 
     private final InterfaceMemberService memberService;
@@ -29,7 +27,7 @@ public class IndexController {
 
     @GetMapping("/") // 처음 기본 페이지
     public String defaultLoginForm(){
-        return "redirect:/loginForm";
+        return "loginForm";
     }
 
     @GetMapping("/loginForm") // 로그인 페이지
@@ -68,20 +66,20 @@ public class IndexController {
 
     @GetMapping("/joinForm") // 회원가입 페이지
     public String joinForm(){
-        return "joinForm";
+        return "/joinForm";
     }
 
     @PostMapping("/join") // 회원가입 처리
     public String join(MemberDTO mDTO){
         System.out.println(mDTO);
 
-        mDTO.setMRole("USER");
+        //mDTO.setMRole("USER");
         String rawPassword = mDTO.getMPw();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         mDTO.setMPw(encPassword);
         memberService.insert(mDTO);
 
-        return "redirect:/loginForm";
+        return "/loginForm";
     }
 
     @PostMapping("/changeRole")
