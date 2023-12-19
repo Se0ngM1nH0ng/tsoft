@@ -12,6 +12,7 @@ public class MemberRoleDTO {
     private int memberCode;
     private int authorityCode;
     private AuthorityDTO authority;
+    private String roleName;
 
     public MemberRoleDTO(){
 

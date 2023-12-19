@@ -68,9 +68,9 @@ public class SecurityConfig {
                         );
 
 
-        http.formLogin(login -> login
-                .loginPage("/loginForm")
-                .defaultSuccessUrl("/index"));
+        //http.formLogin(login -> login
+           //     .loginPage("/loginForm"));
+             //   .defaultSuccessUrl("/index"));
 
 
 

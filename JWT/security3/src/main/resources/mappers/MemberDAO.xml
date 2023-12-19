@@ -21,4 +21,5 @@
         UPDATE MEMBER SET M_ROLE=#{data1} WHERE M_ID=#{data2}
     </update>
 
+
 </mapper>

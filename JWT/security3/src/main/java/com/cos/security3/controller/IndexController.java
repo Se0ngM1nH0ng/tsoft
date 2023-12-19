@@ -1,24 +1,26 @@
 package com.cos.security3.controller;
 
-import com.cos.security3.model.InterfaceMemberService;
-import com.cos.security3.model.MemberDTO;
-import com.cos.security3.model.MemberService;
+import com.cos.security3.model.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/security")
+
 public class IndexController {
 
     private final InterfaceMemberService memberService;
@@ -66,20 +68,26 @@ public class IndexController {
 
     @GetMapping("/joinForm") // 회원가입 페이지
     public String joinForm(){
-        return "/joinForm";
+        return "joinForm";
     }
 
     @PostMapping("/join") // 회원가입 처리
     public String join(MemberDTO mDTO){
         System.out.println(mDTO);
 
-        //mDTO.setMRole("USER");
+//        MemberRoleDTO role = new MemberRoleDTO();
+//        role.setRoleName("USER");
+//
+//        List<MemberRoleDTO> roles = new ArrayList<>();
+//        roles.add(role);
+//
+//        mDTO.setMRole(roles);
         String rawPassword = mDTO.getMPw();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         mDTO.setMPw(encPassword);
         memberService.insert(mDTO);
 
-        return "/loginForm";
+        return "loginForm";
     }
 
     @PostMapping("/changeRole")
@@ -95,18 +103,16 @@ public class IndexController {
         return "fail"; // 업데이트 실패 시 응답
     }
 
-    //@PostMapping("/login") // 중복 로직
-//    public String login(MemberDTO mDTO, Model model){
-//        System.out.println("로그 : " + mDTO);
-//        MemberDTO mdata = memberService.selectOne_login(mDTO);
-//        if(mdata != null){
-//            model.addAttribute("mdata", mdata);
-//            return "index";
-//        }
-//        else{
-//            return "redirect:/loginForm";
-//        }
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@ModelAttribute MemberDTO mDTO){
+
+        TokenDTO token = memberService.selectOne_login(mDTO);
+
+        if(token.getCreateToken() != null){
+            return ResponseEntity.ok().body(memberService.selectOne_login(mDTO));
+        }
+        return ResponseEntity.ok().body("로그인 실패");
+    }
 
 
 
