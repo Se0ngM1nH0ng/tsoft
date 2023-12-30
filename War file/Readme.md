@@ -25,7 +25,7 @@
         > **HTTP 서버**는 저장하는 웹 사이트의 도메인 이름을 통해 액세스 할 수 있으며 이러한 호스팅 된 웹 사이트의 콘텐츠를 최종 사용자의 장치로 전달한다.
         > 
         
-        !https://velog.velcdn.com/images%2Fkdhyo%2Fpost%2F65c93d6d-13e2-4e68-91c3-feed25e702bb%2F%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C.jpg
+        
         
         > 브라우저에 웹 서버에서 호스팅되는 파일이 필요할 때마다 브라우저는 HTTP를 통해 파일을 요청한다.
         > 
@@ -95,8 +95,7 @@
         - 현실에서의 *Web Application*들은 더욱더 많은 기능을 요구할 때가 많습니다.
         - 예를 들면 커뮤니티 사이트에서 자신이 쓴 글만 모아서 볼 수 있게 하는 기능 등이 있습니다. 하지만 기존의 *Web Server* 에서는 *DB* 와 함께 유동적으로 로직에 따라 요청을 처리하지 못합니다. 이를 해결하기 위해서 *Web Application Server*를 사용하게 됩니다.
         
-        ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/025d2d1c-45d5-456f-9013-64f222554705/4961bd9f-4240-4286-92b9-f2a118bc19f5/Untitled.png)
-        
+       
         - *WAS (Web Application Server)* 는 일부 *Web Server* 기능과 *Web Container* 로 함께 구성됩니다. 앞 단의 *Web Server* 는 *HTTP* 요청을 받아서 *Web Container* 로 넘겨주게 됩니다. *Web Container* 이를 내부 프로그램 로직의 처리에 따라서 데이터를 만들어서 *Web Server* 로 다시 전달하게 됩니다. *Java* 에서는 이를 *Servlet* 을 통해서 처리하기 때문에 *Servlet Container* 라고도 부릅니다. 앞서 언급한 같은 *URL* 이지만 로그인한 사용자에 따라 자신이 쓴 글이 보이게 하는 등의 로직이 필요한 기능을 추가할 수가 있습니다. 요청 조건에 따라서 *Web Server* 가 유연하게 처리하지 못하는 문제가 해결됩니다. 이렇게 데이터를 가공한 후에 *Client* 에게 반환해주는 작업을 *Dynamic(동적)* 인 웹처리라고 합니다.
     
 - Embedded Tomcat ( 내장톰캣 ) VS Tomcat ( 외장톰캣 )
