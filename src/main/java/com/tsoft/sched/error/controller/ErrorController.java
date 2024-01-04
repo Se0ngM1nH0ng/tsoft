@@ -1,4 +1,4 @@
-package com.tsoft.sched.adm.controller;
+package com.tsoft.sched.error.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
