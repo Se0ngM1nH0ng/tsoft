@@ -1,7 +1,7 @@
 package com.tsoft.sched.quartz.controller;
 
-import com.tsoft.sched.quartz.model.Job;
-import com.tsoft.sched.quartz.model.Trigger;
+import com.tsoft.sched.quartz.dto.Job;
+import com.tsoft.sched.quartz.dto.Trigger;
 import com.tsoft.sched.quartz.service.QuartzService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

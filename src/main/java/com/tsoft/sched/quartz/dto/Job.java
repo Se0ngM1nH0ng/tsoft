@@ -1,4 +1,4 @@
-package com.tsoft.sched.quartz.model;
+package com.tsoft.sched.quartz.dto;
 
 import lombok.Data;
 

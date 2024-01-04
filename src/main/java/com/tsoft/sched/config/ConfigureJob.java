@@ -1,4 +1,4 @@
-package com.tsoft.sched.quartz.config;
+package com.tsoft.sched.config;
 
 import com.tsoft.sched.quartz.job.ExecuteJob;
 import org.quartz.*;

@@ -1,4 +1,4 @@
-package com.tsoft.sched.adm;
+package com.tsoft.sched.adm.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,8 @@
 package com.tsoft.sched.quartz.service;
 
 import com.tsoft.sched.mapper.QuartzMapper;
-import com.tsoft.sched.quartz.model.Job;
-import com.tsoft.sched.quartz.model.Trigger;
+import com.tsoft.sched.quartz.dto.Job;
+import com.tsoft.sched.quartz.dto.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
