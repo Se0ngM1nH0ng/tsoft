@@ -40,4 +40,19 @@ public class PageController {
     public String popup() {
         return "popup";
     }
+
+    @GetMapping("/scheduleManage")
+    public String scheduleManage() {
+        return "scheduleManage";
+    }
+
+    @GetMapping("/scheduleLog")
+    public String scheduleLog() {
+        return "scheduleLog";
+    }
+
+    @GetMapping("/scheduleInsert")
+    public String scheduleInsert() {
+        return "scheduleInsert";
+    }
 }
