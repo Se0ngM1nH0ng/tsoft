@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Validation Form</title>
+    <title>Job 등록</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -206,7 +206,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Validation</h1>
+                        <h1>Job 등록</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -234,31 +234,21 @@
                             <form id="quickForm">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                        <label for="insertJobTitle">Job 명 (제목)</label>
+                                        <input type="text" name="insertJobTitle" class="form-control" id="insertJobTitle" placeholder="제목을 입력해주세요">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Password</label>
-                                        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                        <label for="insertJobBody">Job 내용</label>
+                                        <input type="text" name="insertJobBody" class="form-control" id="insertJobBody" placeholder="내용을 입력해주세요">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Password</label>
-                                        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">Password</label>
-                                        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                                    </div>
-                                    <div class="form-group mb-0">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1">
-                                            <label class="custom-control-label" for="exampleCheck1">I agree to the <a href="#">terms of service</a>.</label>
-                                        </div>
+                                        <label for="insertJobStartDate">Job 시행일자</label>
+                                        <input type="datetime-local" name="insertJobStartDate" class="form-control" id="insertJobStartDate">
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="button" class="btn btn-primary" onclick="javascript:insertJob()">등록</button>
                                 </div>
                             </form>
                         </div>
@@ -282,7 +272,7 @@
         <div class="float-right d-none d-sm-block">
             <b>Version</b> 3.2.0
         </div>
-        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2015-2024 tsoft </strong> All rights reserved.
     </footer>
 
     <!-- Control Sidebar -->
@@ -306,50 +296,65 @@
 <script src="/resources/dist/js/demo.js"></script>
 <!-- Page specific script -->
 <script>
-    $(function () {
-        $.validator.setDefaults({
-            submitHandler: function () {
-                alert( "Form successful submitted!" );
+    function insertJob(){
+        var title = $('#insertJobTitle').val();
+        var body = $('#insertJobBody').val();
+        var startDate = $('#insertJobStartDate').val();
+
+        if(title == "")	{
+            alert('제목을 입력해 주세요.')
+            $('#insertJobTitle').focus();
+            return;
+        }
+        else if(body == "")	{
+            alert('내용을 입력해 주세요.')
+            $('#insertJobBody').focus();
+            return;
+        }
+        else if(startDate == ""){
+            alert('날짜를 입력해 주세요.')
+            $('#insertJobStartDate').focus();
+            return;
+        }
+
+        var insert_confirm = confirm('등록 하시겠습니까?');
+        if(!insert_confirm){
+            return;
+        }
+
+        var method="POST";
+
+        var requestUrl="/job/scheduleInsert";
+
+        var params = {
+            "title" : title,
+            "body" : body,
+            "startDate": startDate,
+
+        };
+        var getType="json";
+        var contType="application/json; charset=UTF-8";
+        $.ajax({
+            url: requestUrl,
+            type: method,
+            data: JSON.stringify( params),
+            dataType: getType,
+            contentType : contType,
+            cache: false,
+            success: function(response) {
+                if (response.result) {
+                    alert("성공적으로 등록되었습니다");
+                    location.reload();
+                } else {
+                    alert("실패");
+                }
+            },
+            fail: function() {
+                alert("서버와의 연결에 실패하였습니다\n잠시후 다시 시도해주세요");
             }
         });
-        $('#quickForm').validate({
-            rules: {
-                email: {
-                    required: true,
-                    email: true,
-                },
-                password: {
-                    required: true,
-                    minlength: 5
-                },
-                terms: {
-                    required: true
-                },
-            },
-            messages: {
-                email: {
-                    required: "Please enter a email address",
-                    email: "Please enter a valid email address"
-                },
-                password: {
-                    required: "Please provide a password",
-                    minlength: "Your password must be at least 5 characters long"
-                },
-                terms: "Please accept our terms"
-            },
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
-        });
-    });
+
+    }
 </script>
 </body>
 </html>

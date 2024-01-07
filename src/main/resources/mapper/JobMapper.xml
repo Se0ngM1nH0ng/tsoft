@@ -3,4 +3,8 @@
 
     <!-- Define your SQL queries here -->
 
+    <insert id="insertJobManage" parameterType="com.tsoft.sched.quartz.dto.JobManage">
+        INSERT INTO TB_JOB_MANAGE (JOB_TITLE, JOB_BODY, JOB_START_DATE, JOB_STATUS, JOB_REG_DATE)
+        VALUES (#{jobTitle},#{jobBody},#{jobStartDate}, #{jobStatus}, now())
+    </insert>
 </mapper>
