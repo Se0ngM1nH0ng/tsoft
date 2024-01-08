@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -15,12 +16,22 @@ public class JobServiceImpl implements JobService{
     private final JobMapper jobMapper;
 
     @Override
-    public boolean insertJobManage(JobManage jManage) {
-        Map<String, String> map = new HashMap<String , String>();
-        map.put("jobTitle", jManage.getJobTitle());
-        map.put("jobBody", jManage.getJobBody());
-        map.put("jobStartDate", jManage.getJobStartDate());
-        map.put("jobStatus" , jManage.getJobStatus());
-        return jobMapper.insertJobManage(map);
+    public void insertJobManage(HashMap<String, Object> params) {
+        JobManage jManage = new JobManage();
+        jManage.setJobTitle((String) params.get("jobTitle"));
+        jManage.setJobDescription((String) params.get("jobDescription"));
+        jManage.setJobStartDate((String) params.get("jobStartDate"));
+        jManage.setUrl((String) params.get("url"));
+        jManage.setParam((String) params.get("param"));
+
+        jobMapper.insertJobManage(jManage);
     }
+
+    @Override
+    public List<JobManage> selectAll() {
+        System.out.println("진입 : " + jobMapper.selectAll());
+        return jobMapper.selectAll();
+    }
+
+
 }

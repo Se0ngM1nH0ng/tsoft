@@ -19,4 +19,10 @@ public class ResponseDTO {
         this.message = message;
         this.data = data;
     }
+
+    public ResponseDTO(HttpStatus status, String message) {
+        this.status = status.value();
+        this.message = message;
+        this.data = null; // 데이터가 없으므로 null
+    }
 }

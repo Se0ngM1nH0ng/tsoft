@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
     <title>스케쥴러 관리화면</title>
@@ -227,7 +229,7 @@
                             <div class="col-md-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <button type="button" class="btn btn-block btn-outline-primary"><a href ="scheduleInsert">등록</a></button>
+                                        <button type="button" class="btn btn-block btn-outline-primary"><a href ="/page/scheduleInsert">등록</a></button>
                                     </div>
                                 </div>
                             </div>
@@ -247,89 +249,50 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Fixed Header Table</h3>
-<%--                                        <div class="card-tools">--%>
-                                            <div class="input-group input-group-sm" style="width: 150px;">
-                                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-default">
-                                                        <i class="fas fa-search"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-<%--                                        </div>--%>
+
+                                        <h3 class="card-title">Job 목록</h3>
+
+                                        <div class="card-tools">
+                                                    <div class="input-group">
+                                                        <select class="form-control select2" >
+                                                            <option>제목</option>
+                                                            <option>내용</option>
+                                                        </select>
+                                                        <input type="text" name="table_search" class="form-control" placeholder="Search">
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-default">
+                                                                <i class="fas fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                        </div>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body table-responsive p-0" style="height: 300px;">
                                         <table class="table table-head-fixed text-nowrap">
                                             <thead>
                                             <tr>
-                                                <th>ID</th>
-                                                <th >User</th>
-                                                <th>Date</th>
-                                                <th>Status</th>
-                                                <th>Reason</th>
+                                                <th>번호</th>
+                                                <th >Job 명</th>
+                                                <th>Job 시행일자</th>
+                                                <th>상태</th>
+                                                <th>Job 생성일</th>
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <c:forEach var="jobList" items="${jobList}">
                                             <tr>
-                                                <td>183</td>
-                                                <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-lg">
-                                                    John Doe
+                                                <td>${jobList.url}</td>
+                                                <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-lg"
+                                                            style="border: none; background-color: #fff; padding-left: 0; padding-top: 0; text-decoration: underline;  ">
+                                                    ${jobList.param}
                                                 </button></td>
                                                 <td>11-7-2014</td>
                                                 <td><span class="tag tag-success">Approved</span></td>
                                                 <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                                             </tr>
-                                            <tr>
-                                                <td>219</td>
-                                                <td>Alexander Pierce</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-warning">Pending</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>657</td>
-                                                <td>Bob Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-primary">Approved</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>175</td>
-                                                <td>Mike Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-danger">Denied</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>134</td>
-                                                <td>Jim Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-success">Approved</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>494</td>
-                                                <td>Victoria Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-warning">Pending</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>832</td>
-                                                <td>Michael Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-primary">Approved</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>982</td>
-                                                <td>Rocky Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-danger">Denied</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                            </tr>
+                                            </c:forEach>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -384,13 +347,16 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Large Modal</h4>
+                    <h4 class="modal-title">Job 명</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>잡명</p>
+                    <p>잡내용</p>
+                    <p>URL</p>
+                    <p>PARAM</p>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-primary">수정</button>

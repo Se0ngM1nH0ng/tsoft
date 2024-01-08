@@ -238,12 +238,20 @@
                                         <input type="text" name="insertJobTitle" class="form-control" id="insertJobTitle" placeholder="제목을 입력해주세요">
                                     </div>
                                     <div class="form-group">
-                                        <label for="insertJobBody">Job 내용</label>
-                                        <input type="text" name="insertJobBody" class="form-control" id="insertJobBody" placeholder="내용을 입력해주세요">
+                                        <label for="insertJobDescription">Job 내용</label>
+                                        <textarea type="text" name="insertJobDescription" class="form-control" id="insertJobDescription" placeholder="내용을 입력해주세요"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="insertJobStartDate">Job 시행일자</label>
                                         <input type="datetime-local" name="insertJobStartDate" class="form-control" id="insertJobStartDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="insertUrl">URL 입력</label>
+                                        <input type="text" name="insertUrl" class="form-control" id="insertUrl" placeholder="URL을 입력해주세요">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="insertParam">수행 내용</label>
+                                        <textarea type="text" name="insertParam" class="form-control" id="insertParam" placeholder="내용을 입력해주세요"></textarea>
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
@@ -297,23 +305,36 @@
 <!-- Page specific script -->
 <script>
     function insertJob(){
-        var title = $('#insertJobTitle').val();
-        var body = $('#insertJobBody').val();
-        var startDate = $('#insertJobStartDate').val();
+        var jobTitle = $('#insertJobTitle').val();
+        var jobDescription = $('#insertJobDescription').val();
+        var jobStartDate = $('#insertJobStartDate').val();
+        var url = $('#insertUrl').val();
+        var param = $('#insertParam').val();
 
-        if(title == "")	{
+
+        if(jobTitle == "")	{
             alert('제목을 입력해 주세요.')
             $('#insertJobTitle').focus();
             return;
         }
-        else if(body == "")	{
+        else if(jobDescription == "")	{
             alert('내용을 입력해 주세요.')
             $('#insertJobBody').focus();
             return;
         }
-        else if(startDate == ""){
+        else if(jobStartDate == ""){
             alert('날짜를 입력해 주세요.')
             $('#insertJobStartDate').focus();
+            return;
+        }
+        else if(url == ""){
+            alert('URL를 입력해 주세요.')
+            $('#insertUrl').focus();
+            return;
+        }
+        else if(param == ""){
+            alert('수행내용을 입력해 주세요.')
+            $('#insertParam').focus();
             return;
         }
 
@@ -324,12 +345,14 @@
 
         var method="POST";
 
-        var requestUrl="/job/scheduleInsert";
+        var requestUrl="/job/insertJobManage";
 
         var params = {
-            "title" : title,
-            "body" : body,
-            "startDate": startDate,
+            "jobTitle" : jobTitle,
+            "jobDescription" : jobDescription,
+            "jobStartDate": jobStartDate,
+            "url": url,
+            "param": param
 
         };
         var getType="json";
@@ -337,12 +360,12 @@
         $.ajax({
             url: requestUrl,
             type: method,
-            data: JSON.stringify( params),
+            data: JSON.stringify(params),
             dataType: getType,
             contentType : contType,
             cache: false,
             success: function(response) {
-                if (response.result) {
+                if (response.status === 201) {
                     alert("성공적으로 등록되었습니다");
                     location.reload();
                 } else {

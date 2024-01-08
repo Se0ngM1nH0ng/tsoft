@@ -4,7 +4,14 @@
     <!-- Define your SQL queries here -->
 
     <insert id="insertJobManage" parameterType="com.tsoft.sched.quartz.dto.JobManage">
-        INSERT INTO TB_JOB_MANAGE (JOB_TITLE, JOB_BODY, JOB_START_DATE, JOB_STATUS, JOB_REG_DATE)
-        VALUES (#{jobTitle},#{jobBody},#{jobStartDate}, #{jobStatus}, now())
+        INSERT INTO tb_job_manage (JOB_TITLE, JOB_DESCRIPTION, JOB_START_DATE, URL , PARAM  )
+        VALUES (#{jobTitle},#{jobDescription},#{jobStartDate}, #{url}, #{param} )
     </insert>
+
+    <select id="selectAll" resultType="com.tsoft.sched.quartz.dto.JobManage">
+        SELECT JOB_ID, JOB_TITLE, JOB_DESCRIPTION, JOB_START_DATE, JOB_STATUS, URL, PARAM FROM tb_job_manage
+    </select>
+
+
+
 </mapper>
