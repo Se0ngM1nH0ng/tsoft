@@ -8,4 +8,5 @@ import java.util.List;
 public interface JobService {
     void insertJobManage(HashMap<String, Object> params);
     List<JobManage> selectAll();
+    JobManage selectOne(JobManage jManage);
 }

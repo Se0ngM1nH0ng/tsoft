@@ -4,6 +4,7 @@ import com.tsoft.sched.common.ResponseDTO;
 import com.tsoft.sched.quartz.dto.JobManage;
 import com.tsoft.sched.quartz.service.JobService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -29,13 +30,13 @@ public class JobManageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "등록 성공"));
     }
 
-//    @PostMapping("/scheduleManage") // job 관리 페이지 목록 조회
-//    public String scheduleManage(Model model , JobManage jManage) {
-//
-//        List<JobManage> jobList = jobService.selectAll(jManage);
-//        model.addAttribute("jobList", jobList);
-//
-//        return "scheduleManage";
-//    }
+    @PostMapping("/modal") // job 등록
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> modal(@RequestBody JobManage jManage ) {
+        JobManage selectedJob = jobService.selectOne(jManage);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "성공", selectedJob));
+    }
+
 
 }

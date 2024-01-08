@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -67,9 +68,17 @@ public class PageController {
     public String scheduleManage(Model model ) {
 
         List<JobManage> jobList = jobService.selectAll();
-        System.out.println("잡 리스트 뭐나와 : " + jobList);
+
+        // JobStatus ENUM으로 변환하여 모델에 추가
+        List<Integer> statusList = jobList.stream()
+                .map(job -> Integer.parseInt(job.getJob_status()))
+                .collect(Collectors.toList());
+
         model.addAttribute("jobList", jobList);
+        model.addAttribute("statusList", statusList);
+
 
         return "scheduleManage";
     }
 }
+

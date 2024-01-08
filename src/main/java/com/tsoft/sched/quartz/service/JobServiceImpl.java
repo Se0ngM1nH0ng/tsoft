@@ -18,9 +18,9 @@ public class JobServiceImpl implements JobService{
     @Override
     public void insertJobManage(HashMap<String, Object> params) {
         JobManage jManage = new JobManage();
-        jManage.setJobTitle((String) params.get("jobTitle"));
-        jManage.setJobDescription((String) params.get("jobDescription"));
-        jManage.setJobStartDate((String) params.get("jobStartDate"));
+        jManage.setJob_title((String) params.get("jobTitle"));
+        jManage.setJob_description((String) params.get("jobDescription"));
+        jManage.setJob_start_date((String) params.get("jobStartDate"));
         jManage.setUrl((String) params.get("url"));
         jManage.setParam((String) params.get("param"));
 
@@ -29,8 +29,12 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public List<JobManage> selectAll() {
-        System.out.println("진입 : " + jobMapper.selectAll());
         return jobMapper.selectAll();
+    }
+
+    @Override
+    public JobManage selectOne(JobManage jManage) {
+        return jobMapper.selectOne(jManage.getJob_id());
     }
 
 

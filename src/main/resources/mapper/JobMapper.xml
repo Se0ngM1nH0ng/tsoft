@@ -9,9 +9,12 @@
     </insert>
 
     <select id="selectAll" resultType="com.tsoft.sched.quartz.dto.JobManage">
-        SELECT JOB_ID, JOB_TITLE, JOB_DESCRIPTION, JOB_START_DATE, JOB_STATUS, URL, PARAM FROM tb_job_manage
+        SELECT * FROM tb_job_manage ORDER BY JOB_ID ASC
     </select>
 
+    <select id="selectOne" resultType="com.tsoft.sched.quartz.dto.JobManage" parameterType="com.tsoft.sched.quartz.dto.JobManage">
+        SELECT * FROM tb_job_manage WHERE JOB_ID = #{jobId}
+    </select>
 
 
 </mapper>

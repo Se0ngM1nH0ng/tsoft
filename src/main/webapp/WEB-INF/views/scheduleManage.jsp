@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="/resources/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/resources/dist/css/adminlte.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -282,14 +284,35 @@
                                             <tbody>
                                             <c:forEach var="jobList" items="${jobList}">
                                             <tr>
-                                                <td>${jobList.url}</td>
-                                                <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-lg"
-                                                            style="border: none; background-color: #fff; padding-left: 0; padding-top: 0; text-decoration: underline;  ">
-                                                    ${jobList.param}
+                                                <c:if test="${jobList.job_status != -1}">
+                                                <td><button type="button" id="jobId" data-toggle="modal" data-target="#modal-lg"
+                                                            data-mid="${jobList.job_id}" style="border: none; background-color: #fff; padding-left: 0; padding-top: 0; text-decoration: underline;  ">
+                                                        ${jobList.job_id}
                                                 </button></td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-success">Approved</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                                <td>${jobList.job_title}</td>
+                                                <td>${jobList.job_start_date}</td>
+                                                    <c:choose>
+                                                        <c:when test="${jobList.job_status == 0}">
+                                                        <td><div class="bg-primary color-palette" style="width:35px"><span>준비</span></div></td>
+                                                        </c:when>
+                                                        <c:when test="${jobList.job_status == 1}">
+                                                        <td><div class="bg-warning color-palette" style="width:34px"><span>진행</span></div></td>
+                                                        </c:when>
+                                                        <c:when test="${jobList.job_status == 4}">
+                                                        <td><div class="bg-maroon color-palette" style="width:34px"><span>오류</span></div></td>
+                                                        </c:when>
+                                                        <c:when test="${jobList.job_status == 7}">
+                                                        <td><div class="bg-info color-palette" style="width:34px"><span>취소</span></div></td>
+                                                        </c:when>
+                                                        <c:when test="${jobList.job_status == 9}">
+                                                        <td><div class="bg-orange color-palette" style="width:34px"><span>재처리</span></div></td>
+                                                        </c:when>
+                                                        <c:when test="${jobList.job_status == 10}">
+                                                        <td><div class="bg-success color-palette" style="width:34px"><span>완료</span></div></td>
+                                                        </c:when>
+                                                    </c:choose>
+                                                <td>${jobList.job_reg_date}</td>
+                                                </c:if>
                                             </tr>
                                             </c:forEach>
 
@@ -347,16 +370,20 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Job 명</h4>
+                    <h4 class="modalTitle" ></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <p>잡명</p>
+                    <p class="modalTitle"></p>
                     <p>잡내용</p>
+                    <p id="modalDescription"></p>
                     <p>URL</p>
+                    <p id="modalUrl"></p>
                     <p>PARAM</p>
+                    <p id="modalParam"></p>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-primary">수정</button>
@@ -376,6 +403,52 @@
     <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $("#jobId").on("click",function(){
+            var job_id = $(this).data("mid");
+
+            var jManage={ job_id : job_id}; // JSON 데이터
+
+            $.ajax({
+                url : "/job/modal",
+                type : "POST",
+                data : JSON.stringify(jManage),
+                dataType: "json",
+                contentType: "application/json",
+                success : function(response){
+                    // 성공적으로 서버에서 응답을 받았을 때 실행되는 부분
+                    console.log("서버로부터의 응답:", response);
+                    // 받은 데이터 처리 예시
+                    console.log("받은 JobManage 객체:", response.data.job_id);
+                    console.log("받은 JobManage 객체:", response.data.job_title);
+                    console.log("받은 JobManage 객체:", response.data.job_description);
+                    console.log("받은 JobManage 객체:", response.data.url);
+                    console.log("받은 JobManage 객체:", response.data.param);
+
+                    var modalTitle = response.data.job_title;
+                    var modalDescription = response.data.job_description;
+                    var modalUrl = response.data.url;
+                    var modalParam = response.data.param;
+
+
+
+                    $('.modalTitle').html(modalTitle);
+                    $('#modalDescription').html(modalDescription);
+                    $('#modalUrl').html(modalUrl);
+                    $('#modalParam').html(modalParam);
+
+                    //showModalWithData(order);
+                },
+                error : function(){
+                    console.log("로그 : 에러발생...");
+                }
+            });
+        });
+    });
+
+</script>
 
 <!-- jQuery -->
 <script src="/resources/plugins/jquery/jquery.min.js"></script>
@@ -383,9 +456,7 @@
 <script src="/resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- overlayScrollbars -->
 <script src="/resources/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<%--<script src="/resources/dist/js/adminlte.min.js"></script>--%>
-<!-- AdminLTE for demo purposes -->
-<%--<script src="/resources/dist/js/demo.js"></script>--%>
+
+
 </body>
 </html>

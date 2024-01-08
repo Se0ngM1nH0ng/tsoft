@@ -10,5 +10,5 @@ public interface JobMapper {
 
    void insertJobManage(JobManage jManage);
    List<JobManage> selectAll();
-    // Add other CRUD operations
+   JobManage selectOne(int jManage);
 }
