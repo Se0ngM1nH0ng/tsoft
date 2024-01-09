@@ -1,17 +1,14 @@
 package com.tsoft.sched.adm.controller;
 
 import com.tsoft.sched.common.ResponseDTO;
-import com.tsoft.sched.quartz.dto.JobManage;
-import com.tsoft.sched.quartz.service.JobService;
+import com.tsoft.sched.adm.dto.JobManage;
+import com.tsoft.sched.adm.service.JobService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,6 +33,24 @@ public class JobManageController {
         JobManage selectedJob = jobService.selectOne(jManage);
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "성공", selectedJob));
+    }
+
+    @PostMapping("/jobUpdate") // job 등록
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> jobUpdate(@RequestBody HashMap<String, Object> params ) {
+        System.out.println("값 확인 : " + params);
+        jobService.update(params);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "변경성공"));
+    }
+
+    @PostMapping("/jobDelete") // job 등록
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> jobDelete(@RequestParam("jobId") int hiddenJobId ) {
+        System.out.println("값 확인 : " + hiddenJobId);
+        jobService.delete(hiddenJobId);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제성공"));
     }
 
 

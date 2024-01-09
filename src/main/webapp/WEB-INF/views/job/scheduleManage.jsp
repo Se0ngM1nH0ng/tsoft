@@ -270,7 +270,7 @@
                                         </div>
                                     </div>
                                     <!-- /.card-header -->
-                                    <div class="card-body table-responsive p-0" style="height: 300px;">
+                                    <div class="card-body table-responsive p-0" style="height: 500px;">
                                         <table class="table table-head-fixed text-nowrap">
                                             <thead>
                                             <tr>
@@ -285,7 +285,7 @@
                                             <c:forEach var="jobList" items="${jobList}">
                                             <tr>
                                                 <c:if test="${jobList.job_status != -1}">
-                                                <td><button type="button" id="jobId" data-toggle="modal" data-target="#modal-lg"
+                                                <td><button type="button" class="jobButton" data-toggle="modal" data-target="#modal-lg"
                                                             data-mid="${jobList.job_id}" style="border: none; background-color: #fff; padding-left: 0; padding-top: 0; text-decoration: underline;  ">
                                                         ${jobList.job_id}
                                                 </button></td>
@@ -293,7 +293,7 @@
                                                 <td>${jobList.job_start_date}</td>
                                                     <c:choose>
                                                         <c:when test="${jobList.job_status == 0}">
-                                                        <td><div class="bg-primary color-palette" style="width:35px"><span>준비</span></div></td>
+                                                        <td><div class="bg-primary color-palette" style="width:34px"><span>준비</span></div></td>
                                                         </c:when>
                                                         <c:when test="${jobList.job_status == 1}">
                                                         <td><div class="bg-warning color-palette" style="width:34px"><span>진행</span></div></td>
@@ -305,7 +305,7 @@
                                                         <td><div class="bg-info color-palette" style="width:34px"><span>취소</span></div></td>
                                                         </c:when>
                                                         <c:when test="${jobList.job_status == 9}">
-                                                        <td><div class="bg-orange color-palette" style="width:34px"><span>재처리</span></div></td>
+                                                        <td><div class="bg-orange color-palette" style="width:49px"><span>재처리</span></div></td>
                                                         </c:when>
                                                         <c:when test="${jobList.job_status == 10}">
                                                         <td><div class="bg-success color-palette" style="width:34px"><span>완료</span></div></td>
@@ -326,44 +326,9 @@
                         </div>
 
 
-                        <!-- Default box -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Title</h3>
 
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                Start creating your amazing application!
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                Footer
-                            </div>
-                            <!-- /.card-footer-->
-                        </div>
-                        <!-- /.card -->
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
 
-    <footer class="main-footer">
-        <div class="float-right d-none d-sm-block">
-            <b>Version</b> 3.2.0
-        </div>
-        <strong>Copyright &copy; 2015-2024 tsoft </strong> All rights reserved.
-    </footer>
+
 
     <!-- 모달창 -->
     <div class="modal fade" id="modal-lg">
@@ -376,18 +341,25 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>잡명</p>
-                    <p class="modalTitle"></p>
-                    <p>잡내용</p>
-                    <p id="modalDescription"></p>
-                    <p>URL</p>
-                    <p id="modalUrl"></p>
-                    <p>PARAM</p>
-                    <p id="modalParam"></p>
+                    <input type="hidden" id="hiddenJobId" name="job_id">
+                    <p>▶ Job 명</p>
+                    <p id="modalTitle" contenteditable= "false" ></p><hr>
+
+                    <p>▶ Job 내용</p>
+                    <p id="modalDescription" contenteditable= "false"></p><hr>
+                    <p>▶ URL</p>
+                    <p id="modalUrl" contenteditable= "false"></p><hr>
+                    <p>▶ PARAM</p>
+                    <p id="modalParam" contenteditable= "false"></p><hr>
+                    <p>▶ 상태 ( 숫자로 표현 해주세요 ! )</p>
+                    <p style="font-size: 12px">준비(0), 진행(1), 오류(4), 취소(7), 재처리(9) , 완료(10)</p>
+                    <p class="modalStatus" contenteditable="false"></p>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-primary">수정</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" id="update_job" onclick="javascript:updateJob()">수정</button>
+                    <button type="button" class="btn btn-default" id="close_job" data-dismiss="modal" >닫기</button>
+                    <button type="button" class="btn btn-default" id="delete_job" data-dismiss="modal"
+                            style="background-color: #9c3328; color: #fff0f0" onclick="javascript:deleteJob()" >삭제</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -406,7 +378,7 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-        $("#jobId").on("click",function(){
+        $(".jobButton").on("click",function(){
             var job_id = $(this).data("mid");
 
             var jManage={ job_id : job_id}; // JSON 데이터
@@ -418,26 +390,20 @@
                 dataType: "json",
                 contentType: "application/json",
                 success : function(response){
-                    // 성공적으로 서버에서 응답을 받았을 때 실행되는 부분
-                    console.log("서버로부터의 응답:", response);
-                    // 받은 데이터 처리 예시
-                    console.log("받은 JobManage 객체:", response.data.job_id);
-                    console.log("받은 JobManage 객체:", response.data.job_title);
-                    console.log("받은 JobManage 객체:", response.data.job_description);
-                    console.log("받은 JobManage 객체:", response.data.url);
-                    console.log("받은 JobManage 객체:", response.data.param);
 
                     var modalTitle = response.data.job_title;
                     var modalDescription = response.data.job_description;
                     var modalUrl = response.data.url;
                     var modalParam = response.data.param;
+                    var modalStatus = response.data.job_status;
+                    var modalJobId = response.data.job_id;
 
-
-
-                    $('.modalTitle').html(modalTitle);
+                    $('#modalTitle').html(modalTitle);
                     $('#modalDescription').html(modalDescription);
                     $('#modalUrl').html(modalUrl);
                     $('#modalParam').html(modalParam);
+                    $('.modalStatus').html(modalStatus);
+                    $('#hiddenJobId').val(modalJobId);
 
                     //showModalWithData(order);
                 },
@@ -447,6 +413,121 @@
             });
         });
     });
+
+    function updateJob(){
+        var jobTitle = $('#modalTitle').text();
+        var description = $('#modalDescription').text();
+        var url = $('#modalDescription').text();
+        var param = $('#modalDescription').text();
+        var status = $('.modalStatus').text();
+        var hiddenJobId = $('#hiddenJobId').val();
+        if (!isNaN(hiddenJobId)) {
+            hiddenJobId = parseInt(hiddenJobId);
+        }
+
+        var editable = $('#modalTitle').attr('contentEditable');
+
+        if(editable == 'true'){
+            var update_confirm = confirm('수정 하시겠습니까?');
+            if(!update_confirm){
+                return;
+            }
+
+            $('#modalTitle').attr('contentEditable', false)
+            $('#modalDescription').attr('contentEditable', false)
+            $('#modalUrl').attr('contentEditable', false)
+            $('#modalParam').attr('contentEditable', false)
+            $('.modalStatus').attr('contentEditable', false)
+            $('#update_job').text('수정');
+            $('#close_job').text('닫기');
+        }else{
+            $('#modalTitle').attr('contentEditable', true)
+            $('#modalDescription').attr('contentEditable', true)
+            $('#modalUrl').attr('contentEditable', true)
+            $('#modalParam').attr('contentEditable', true)
+            $('.modalStatus').attr('contentEditable', true)
+            $('#update_job').text('저장');
+            $('#close_job').text('취소');
+            return;
+        }
+
+        if(jobTitle.length > 30){
+            alert("제목 30자 제한");
+            return;
+        }
+
+        var method="POST";
+        var requestUrl="/job/jobUpdate";
+        var params = {
+            "jobId": hiddenJobId ,
+            "jobTitle" : jobTitle,
+            "jobDescription" : description,
+            "url" : url,
+            "param" : param,
+            "jobStatus" : status
+        };
+        var getType="json";
+        var contType="application/json; charset=UTF-8";
+        $.ajax({
+            url: requestUrl,
+            type: method,
+            data: JSON.stringify( params),
+            dataType: getType,
+            contentType : contType,
+            cache: false,
+            success: function(response) {
+                console.log("response : " + response);
+                console.log("response.data.job_id : " + response.status == 200);
+                if(response.status === 200){
+                    alert("변경되었습니다.");
+                    location.reload();
+                }else{
+                    alert("실패");
+                }
+
+            },
+            fail: function() {
+                alert("서버와의 연결에 실패하였습니다\n잠시후 다시 시도해주세요");
+            }
+        });
+    }
+
+    function deleteJob(){
+        var hiddenJobId = $('#hiddenJobId').val();
+        if (!isNaN(hiddenJobId)) {
+            hiddenJobId = parseInt(hiddenJobId);
+        }
+
+        var first_confirm = confirm('삭제 하시겠습니까?');
+        if(first_confirm){
+            var second_confirm = confirm('정말 삭제 하시겠습니까 ? 이전내용은 복구되지 않습니다 !');
+            if(second_confirm){
+                $.ajax({
+                    url: '/job/jobDelete', // 삭제 요청을 처리하는 엔드포인트 URL
+                    method: 'POST', // 혹은 'DELETE' 등 HTTP 메서드 지정
+                    data: { jobId: hiddenJobId }, // 삭제할 Job ID 등의 데이터
+                    success: function(response) {
+                        console.log("response : "+ response);
+                        if (response.status === 200) {
+                            alert('삭제 되었습니다!');
+                            // 삭제 후 필요한 추가 동작 수행
+                        } else {
+                            alert('삭제 실패했습니다!');
+                        }
+                    },
+                    error: function() {
+                        alert('서버 요청에 실패했습니다!');
+                    }
+                });
+
+            }else{
+                return;
+            }
+        }else{
+            return;
+        }
+    }
+
 
 </script>
 

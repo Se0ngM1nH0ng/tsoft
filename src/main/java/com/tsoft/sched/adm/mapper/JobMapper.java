@@ -1,6 +1,6 @@
-package com.tsoft.sched.quartz.mapper;
+package com.tsoft.sched.adm.mapper;
 
-import com.tsoft.sched.quartz.dto.JobManage;
+import com.tsoft.sched.adm.dto.JobManage;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,4 +11,6 @@ public interface JobMapper {
    void insertJobManage(JobManage jManage);
    List<JobManage> selectAll();
    JobManage selectOne(int jManage);
+   void update(JobManage jManage);
+   void delete(int hiddenJobId);
 }
