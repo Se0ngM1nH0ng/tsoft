@@ -101,13 +101,14 @@
 			<version>3.0.1</version>
 		</dependency>
 
-		<!-- /jstl -->
-
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- /jstl -->
+
 
 		<!-- WebClient 사용시 등록 -->
 		<dependency>
@@ -115,7 +116,6 @@
 			<artifactId>spring-webflux</artifactId>
 			<version>6.1.1</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<plugins>

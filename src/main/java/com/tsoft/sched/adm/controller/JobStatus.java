@@ -5,7 +5,7 @@ public enum JobStatus {
     READY(0),
     PROGRESS(1),
     ERROR(4),
-    CANCELE(7),
+    CANCEL(7),
     RETRY(9),
     COMPLETE(10);
 

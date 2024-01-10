@@ -61,22 +61,25 @@ public class PageController {
     public String scheduleInsert() {
         return "scheduleInsert";
     }
+    @GetMapping("/serverInsert")
+    public String serverInsert() {
+        return "serverInsert";
+    }
 
     @RequestMapping("/scheduleManage") // job 관리 페이지 목록 조회
-    public String scheduleManage(Model model ) {
+    public String scheduleManage(Model model) {
 
         List<JobManage> jobList = jobService.selectAll();
 
-        // JobStatus ENUM으로 변환하여 모델에 추가
-        List<Integer> statusList = jobList.stream()
-                .map(job -> Integer.parseInt(job.getJobStatus()))
-                .collect(Collectors.toList());
-
         model.addAttribute("jobList", jobList);
-        model.addAttribute("statusList", statusList);
 
 
         return "scheduleManage";
+    }
+    @GetMapping("/serverManage") // job 관리 페이지 목록 조회
+    public String serverManage() {
+
+        return "serverManage";
     }
 }
 

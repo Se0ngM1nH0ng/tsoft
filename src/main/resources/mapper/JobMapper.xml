@@ -4,8 +4,8 @@
     <!-- Define your SQL queries here -->
 
     <insert id="insertJobManage" parameterType="com.tsoft.sched.adm.dto.JobManage">
-        INSERT INTO tb_job_manage (job_title, job_description, job_start_date, url , param  )
-        VALUES (#{jobTitle},#{jobDescription},#{jobStartDate}, #{url}, #{param} )
+        INSERT INTO tb_job_manage (job_title, job_description, job_start_date, server_group, url , param )
+        VALUES (#{jobTitle},#{jobDescription},#{jobStartDate}, #{serverGroup}, #{url}, #{param} )
     </insert>
 
     <select id="selectAll" resultType="com.tsoft.sched.adm.dto.JobManage">
@@ -18,12 +18,12 @@
 
     <update id="update" parameterType="com.tsoft.sched.adm.dto.JobManage">
         UPDATE tb_job_manage
-        SET job_title=#{jobTitle}, jobDescription=#{jobDescription}, url=#{url}, param=#{param}, job_status=#{jobStatus} WHERE jobId =#{jobId}
+        SET job_title=#{jobTitle}, job_description=#{jobDescription}, job_start_date=#{jobStartDate}, url=#{url}, param=#{param} WHERE job_id =#{jobId}
     </update> <!-- JobManage 객체와 동일한 이름이어야 맵핑 가능 -->
 
-    <update id="delete" parameterType="int">
+    <update id="delete" parameterType="com.tsoft.sched.adm.dto.JobManage">
         UPDATE tb_job_manage
-        SET jobStatus = -1 WHERE jobId = #{hiddenJobId}
+        SET job_status = -1 WHERE job_id = #{hiddenJobId}
     </update>
 
 </mapper>

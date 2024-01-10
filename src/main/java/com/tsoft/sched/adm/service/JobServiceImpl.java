@@ -2,7 +2,6 @@ package com.tsoft.sched.adm.service;
 
 import com.tsoft.sched.adm.dto.JobManage;
 import com.tsoft.sched.adm.mapper.JobMapper;
-import com.tsoft.sched.adm.service.JobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +16,19 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void insertJobManage(HashMap<String, Object> params) {
-        JobManage jManage = new JobManage();
-        jManage.setJobTitle((String) params.get("jobTitle"));
-        jManage.setJobDescription((String) params.get("jobDescription"));
-        jManage.setJobStartDate((String) params.get("jobStartDate"));
-        jManage.setUrl((String) params.get("url"));
-        jManage.setParam((String) params.get("param"));
+        try {
+            JobManage jManage = new JobManage();
+            jManage.setJobTitle((String) params.get("jobTitle"));
+            jManage.setJobDescription((String) params.get("jobDescription"));
+            jManage.setJobStartDate((String) params.get("jobStartDate"));
+            jManage.setServerGroup((String) params.get("serverGroup"));
+            jManage.setUrl((String) params.get("url"));
+            jManage.setParam((String) params.get("param"));
 
-        jobMapper.insertJobManage(jManage);
+            jobMapper.insertJobManage(jManage);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -34,20 +38,29 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobManage selectOne(JobManage jManage) {
-        return jobMapper.selectOne(jManage.getJobId());
+
+        JobManage jobManage = jobMapper.selectOne(jManage);
+        List<JobManage> jobManageList = jobMapper.selectAll();
+
+        return jobMapper.selectOne(jManage);
     }
 
     @Override
     public void update(HashMap<String, Object> params) {
-        JobManage jManage = new JobManage();
-        jManage.setJobTitle((String)params.get("jobTitle"));
-        jManage.setJobDescription((String)params.get("jobDescription")); // ajax 에서 넘겨준 key 이름
-        jManage.setUrl((String)params.get("url"));
-        jManage.setParam((String)params.get("param"));
-        jManage.setJobStatus((String)params.get("jobStatus"));
-        jManage.setJobId((Integer) params.get("jobId"));
+        try{
+            JobManage jManage = new JobManage();
+            jManage.setJobTitle((String)params.get("jobTitle"));
+            jManage.setJobDescription((String)params.get("jobDescription")); // ajax 에서 넘겨준 key 이름
+            jManage.setJobStartDate((String)params.get("jobStartDate")); // ajax 에서 넘겨준 key 이름
+            jManage.setUrl((String)params.get("url"));
+            jManage.setParam((String)params.get("param"));
+            jManage.setJobId((Integer) params.get("jobId"));
 
-        jobMapper.update(jManage);
+            jobMapper.update(jManage);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override

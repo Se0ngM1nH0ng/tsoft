@@ -10,7 +10,7 @@ public interface JobMapper {
 
    void insertJobManage(JobManage jManage);
    List<JobManage> selectAll();
-   JobManage selectOne(int jManage);
+   JobManage selectOne(JobManage jManage);
    void update(JobManage jManage);
    void delete(int hiddenJobId);
 }

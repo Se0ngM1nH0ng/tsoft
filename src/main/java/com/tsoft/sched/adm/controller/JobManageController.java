@@ -20,14 +20,13 @@ public class JobManageController {
     @PostMapping("/insertJobManage") // job 등록
     @ResponseBody
     public ResponseEntity<ResponseDTO> insertJobManage(@RequestBody HashMap<String,Object> params ) {
-        params.put("jobStatus", "준비");
         jobService.insertJobManage(params);
 
         // jobService.insertJobManage()를 직접 body에 설정
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "등록 성공"));
     }
 
-    @PostMapping("/modal") // job 등록
+    @PostMapping("/JobModal") // 모달창
     @ResponseBody
     public ResponseEntity<ResponseDTO> modal(@RequestBody JobManage jManage ) {
         JobManage selectedJob = jobService.selectOne(jManage);
@@ -35,7 +34,7 @@ public class JobManageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "성공", selectedJob));
     }
 
-    @PostMapping("/jobUpdate") // job 등록
+    @PostMapping("/jobUpdate") // 수정
     @ResponseBody
     public ResponseEntity<ResponseDTO> jobUpdate(@RequestBody HashMap<String, Object> params ) {
         System.out.println("값 확인 : " + params);
@@ -44,7 +43,7 @@ public class JobManageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "변경성공"));
     }
 
-    @PostMapping("/jobDelete") // job 등록
+    @PostMapping("/jobDelete") // 삭제
     @ResponseBody
     public ResponseEntity<ResponseDTO> jobDelete(@RequestParam("jobId") int hiddenJobId ) {
         System.out.println("값 확인 : " + hiddenJobId);

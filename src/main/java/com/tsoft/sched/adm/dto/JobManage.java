@@ -8,10 +8,11 @@ public class JobManage {
     private String jobTitle;
     private String jobDescription;
     private String jobStartDate;
-    private String jobStatus;
+    private int jobStatus;
     private String url;
     private String param;
     private String jobAction;
     private String jobRegDate;
     private String jobModifyDate;
+    private String serverGroup;
 }
