@@ -77,7 +77,10 @@ public class PageController {
         return "scheduleManage";
     }
     @GetMapping("/serverManage") // job 관리 페이지 목록 조회
-    public String serverManage() {
+    public String serverManage(Model model) {
+        List<JobManage> jobList = jobService.selectAll();
+
+        model.addAttribute("jobList", jobList);
 
         return "serverManage";
     }

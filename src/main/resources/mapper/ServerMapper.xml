@@ -1,0 +1,29 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsoft.sched.adm.mapper.ServerMapper">
+
+    <!-- Define your SQL queries here -->
+
+    <insert id="serverInsert" parameterType="com.tsoft.sched.adm.dto.ServerManage">
+        INSERT INTO tb_server_info (server_group, server_name, server_ip, server_desc )
+        VALUES (#{serverGroup},#{serverName},#{serverIp}, #{serverDesc} )
+    </insert>
+
+    <select id="serverSelectAll" resultType="com.tsoft.sched.adm.dto.ServerManage">
+        SELECT * FROM tb_server_info ORDER BY server_id ASC
+    </select>
+
+    <select id="serverSelectOne" resultType="com.tsoft.sched.adm.dto.ServerManage" parameterType="com.tsoft.sched.adm.dto.ServerManage">
+        SELECT * FROM tb_server_info WHERE server_id = #{serverId}
+    </select>
+
+    <update id="serverUpdate" parameterType="com.tsoft.sched.adm.dto.ServerManage">
+        UPDATE tb_server_info
+        SET server_name=#{serverName}, server_group=#{serverGroup}, server_ip=#{serverIp}, server_desc=#{serverDesc} WHERE server_id =#{serverId}
+    </update> <!-- JobManage 객체와 동일한 이름이어야 맵핑 가능 -->
+
+    <update id="serverDelete" parameterType="com.tsoft.sched.adm.dto.ServerManage">
+        UPDATE tb_server_info
+        SET use_yn = 'n' WHERE server_id = #{serverId}
+    </update>
+
+</mapper>

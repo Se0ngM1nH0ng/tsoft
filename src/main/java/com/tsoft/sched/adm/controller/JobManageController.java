@@ -6,9 +6,11 @@ import com.tsoft.sched.adm.service.JobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,5 +54,15 @@ public class JobManageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제성공"));
     }
 
+    @PostMapping("/scheduleManage") // job 관리 페이지 목록 조회
+    public String scheduleManage(Model model) {
+
+        List<JobManage> jobList = jobService.selectAll();
+
+        model.addAttribute("jobList", jobList);
+
+
+        return "scheduleManage";
+    }
 
 }
