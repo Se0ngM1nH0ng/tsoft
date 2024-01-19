@@ -179,8 +179,8 @@
                 </div>
             </div>
         </section>
-        <!-- /.content -->
     </div>
+<!-- /.content -->
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">

@@ -28,7 +28,7 @@ public class JobManageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "등록 성공"));
     }
 
-    @PostMapping("/JobModal") // 모달창
+    @RequestMapping("/jobModal") // 모달창
     @ResponseBody
     public ResponseEntity<ResponseDTO> modal(@RequestBody JobManage jManage ) {
         JobManage selectedJob = jobService.selectOne(jManage);

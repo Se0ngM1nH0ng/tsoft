@@ -56,14 +56,7 @@ public class ServerManageController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제성공"));
     }
 
-    @PostMapping("/serverManage") // job 관리 페이지 목록 조회
-    public String serverManage(Model model) {
-        List<ServerManage> serverList = serverService.serverSelectAll();
 
-        model.addAttribute("serverList",serverList );
-
-        return "serverManage";
-    }
 
 
 

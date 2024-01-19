@@ -1,8 +1,11 @@
 package com.tsoft.sched.adm.service;
 
 import com.tsoft.sched.adm.dto.JobManage;
+import com.tsoft.sched.adm.dto.Page;
+import com.tsoft.sched.adm.dto.SearchDto;
 import com.tsoft.sched.adm.mapper.JobMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -66,6 +69,11 @@ public class JobServiceImpl implements JobService {
     @Override
     public void delete(int hiddenJobId) {
         jobMapper.delete(hiddenJobId);
+    }
+
+    @Override
+    public List<JobManage> findAllPost(SearchDto params) {
+        return jobMapper.findAll(params);
     }
 
 

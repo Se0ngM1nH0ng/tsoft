@@ -14,8 +14,6 @@ public class ServerServiceImpl implements ServerService {
 
     private final ServerMapper serverMapper;
 
-
-
     @Override
     public void serverInsert(HashMap<String, Object> params) {
         try {

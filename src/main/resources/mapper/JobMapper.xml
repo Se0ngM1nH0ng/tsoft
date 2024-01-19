@@ -9,7 +9,7 @@
     </insert>
 
     <select id="selectAll" resultType="com.tsoft.sched.adm.dto.JobManage">
-        SELECT * FROM tb_job_manage ORDER BY job_id ASC
+        SELECT * FROM tb_job_manage ORDER BY job_id DESC
     </select>
 
     <select id="selectOne" resultType="com.tsoft.sched.adm.dto.JobManage" parameterType="com.tsoft.sched.adm.dto.JobManage">
@@ -25,5 +25,16 @@
         UPDATE tb_job_manage
         SET job_status = -1 WHERE job_id = #{hiddenJobId}
     </update>
+
+    <!-- 페이징 처리 -->
+    <select id="findAll" parameterType="com.tsoft.sched.adm.dto.SearchDto" resultType="com.tsoft.sched.adm.dto.JobManage">
+        <include refid="selectAll" />
+        LIMIT #{offset}, #{recordSize}
+    </select>
+
+    <select id="count" parameterType="com.tsoft.sched.adm.dto.SearchDto" resultType="_int">
+        SELECT COUNT(*) FROM tb_job_manage WHERE job_status != -1
+    </select>
+
 
 </mapper>

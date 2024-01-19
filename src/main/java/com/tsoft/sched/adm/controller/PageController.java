@@ -1,7 +1,9 @@
 package com.tsoft.sched.adm.controller;
 
 import com.tsoft.sched.adm.dto.JobManage;
+import com.tsoft.sched.adm.dto.ServerManage;
 import com.tsoft.sched.adm.service.JobService;
+import com.tsoft.sched.adm.service.ServerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ public class PageController {
     private String containerName;
 
     private final JobService jobService;
+    private final ServerService serverService;
 
 
     @GetMapping("/hello")
@@ -76,13 +79,19 @@ public class PageController {
 
         return "scheduleManage";
     }
-    @GetMapping("/serverManage") // job 관리 페이지 목록 조회
-    public String serverManage(Model model) {
-        List<JobManage> jobList = jobService.selectAll();
 
-        model.addAttribute("jobList", jobList);
+
+    @RequestMapping("/serverManage") // job 관리 페이지 목록 조회
+    public String serverManage(Model model) {
+
+        List<ServerManage> serverList = serverService.serverSelectAll();
+
+        model.addAttribute("serverList", serverList);
+
 
         return "serverManage";
     }
+
+
 }
 

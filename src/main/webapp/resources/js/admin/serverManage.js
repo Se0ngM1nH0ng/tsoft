@@ -1,25 +1,23 @@
-// job 조회 수정 삭제
+// 서버 조회 수정 삭제
 
-function modal(){
-    $(".jobButton").on("click",function(){
-        let jobId = $(this).data("mid");
-        let jManage={ jobId : jobId}; // JSON 데이터
+function serverModal(){
+    $(".serverButton").on("click",function(){
+        let serverId = $(this).data("mid");
+        let sManage={ serverId : serverId}; // JSON 데이터
 
         $.ajax({
-            url : "/job/jobModal",
+            url : "/server/serverModal",
             type : "POST",
-            data : JSON.stringify(jManage),
+            data : JSON.stringify(sManage),
             dataType: "json",
             contentType: "application/json",
             success : function(response){
 
                 const dataMapping = { // DOM 사용
-                    'jobTitle': '#modalTitle',
-                    'jobDescription': '#modalDescription',
-                    'url': '#modalUrl',
-                    'param': '#modalParam',
-                    'jobStatus': '.modalStatus',
-                    'jobStartDate': '#modalStartDate',
+                    'serverName': '#modalName',
+                    'serverDesc': '#modalDesc',
+                    'serverIp': '#modalIp',
+                    'serverGroup': '#modalGroup'
                 };
 
                 for(let key in response.data){
@@ -28,7 +26,7 @@ function modal(){
                         $(dataMapping[key]).text(value);
                     }
                 }
-                $('.hiddenJobId').val(response.data.jobId); // class 로 지정, id 는 고유의 것이라 여기서 밖에 사용 안됨
+                $('.hiddenServerId').val(response.data.serverId); // class 로 지정, id 는 고유의 것이라 여기서 밖에 사용 안됨
             },
             error : function(){
                 console.log("로그 : 에러발생...");
@@ -37,18 +35,17 @@ function modal(){
     });
 }
 
-function updateJob(){
-    let jobTitle = $('#modalTitle').text();
-    let jobDescription = $('#modalDescription').text();
-    let url = $('#modalDescription').text();
-    let param = $('#modalDescription').text();
-    let jobStartDate = $('#modalStartDate').text();
-    let jobId = $('.hiddenJobId').val();
-    if (!isNaN(jobId)) {
-        jobId = parseInt(jobId);
+function updateServer(){
+    let serverName = $('#modalName').text();
+    let serverDesc = $('#modalDesc').text();
+    let serverIp = $('#modalIp').text();
+    let serverGroup = $('#modalGroup').text();
+    let serverId = $('.hiddenServerId').val();
+    if (!isNaN(serverId)) {
+        serverId = parseInt(serverId);
     }
 
-    var editable = $('#modalTitle').attr('contentEditable');
+    var editable = $('#modalName').attr('contentEditable');
 
     if('true' == editable){ // null 값 이슈
         var update_confirm = confirm('수정 하시겠습니까?');
@@ -56,54 +53,40 @@ function updateJob(){
             return;
         }
 
-        $('#modalTitle').attr('contentEditable', false)
-        $('#modalDescription').attr('contentEditable', false)
-        $('#modalUrl').attr('contentEditable', false)
-        $('#modalParam').attr('contentEditable', false)
-        $('#modalStartDate').attr('contentEditable', false)
-        $('#update_job').text('수정');
-        $('#close_job').text('닫기');
+        $('.modalServer').attr('contentEditable', false)
+        $('#update_server').text('수정');
+        $('#close_server').text('닫기');
     }else{
-        $('#modalTitle').attr('contentEditable', true)
-        $('#modalDescription').attr('contentEditable', true)
-        $('#modalUrl').attr('contentEditable', true)
-        $('#modalParam').attr('contentEditable', true)
-        $('.startDate').attr('contentEditable', true)
-        $('#modalStartDate').attr('contentEditable', true)
-
-        $('#update_job').text('저장');
-        $('#close_job').text('취소');
+        $('.modalServer').attr('contentEditable', true)
+        $('#update_server').text('저장');
+        $('#close_server').text('취소');
         return;
     }
 
-    if(jobTitle.length > 30){
-        alert("제목 30자 제한");
+    if(serverName.length > 30){
+        alert("서버명 30자 제한");
         return;
     }
 
     var method="POST";
-    var requestUrl="/job/jobUpdate";
+    var requestUrl="/server/serverUpdate";
     var params = {
-        "jobId": jobId ,
-        "jobTitle" : jobTitle,
-        "jobDescription" : jobDescription,
-        "url" : url,
-        "param" : param,
-        "jobStartDate": jobStartDate
-
+        "serverName": serverName ,
+        "serverDesc" : serverDesc,
+        "serverIp" : serverIp,
+        "serverGroup" : serverGroup
     };
     var getType="json";
     var contType="application/json; charset=UTF-8";
     $.ajax({
         url: requestUrl,
         type: method,
-        data: JSON.stringify( params),
+        data: JSON.stringify(params),
         dataType: getType,
         contentType : contType,
         cache: false,
         success: function(response) {
             console.log("response : " + response);
-            console.log("response.data.job_id : " + response.status == 200);
             if(response.status === 200){
                 alert("변경되었습니다.");
                 location.reload();
@@ -118,19 +101,19 @@ function updateJob(){
     });
 }
 
-function deleteJob(){
-    var jobId = $('.hiddenJobId').val();
-    if (!isNaN(jobId)) {
-        jobId = parseInt(jobId);
+function deleteServer(){
+    let serverId = $('.hiddenServerId').val();
+    if (!isNaN(serverId)) {
+        serverId = parseInt(serverId);
     }
-    var first_confirm = confirm('삭제 하시겠습니까?');
+    let first_confirm = confirm('삭제 하시겠습니까?');
     if(first_confirm){
-        var second_confirm = confirm('정말 삭제 하시겠습니까 ? 이전내용은 복구되지 않습니다 !');
+        let second_confirm = confirm('정말 삭제 하시겠습니까 ? 이전내용은 복구되지 않습니다 !');
         if(second_confirm){
             $.ajax({
-                url: '/job/jobDelete', // 삭제 요청을 처리하는 엔드포인트 URL
+                url: '/server/serverDelete', // 삭제 요청을 처리하는 엔드포인트 URL
                 method: 'POST', // 혹은 'DELETE' 등 HTTP 메서드 지정
-                data: { jobId: jobId }, // 삭제할 Job ID 등의 데이터
+                data: { serverId: serverId }, // 삭제할 Job ID 등의 데이터
                 success: function(response) {
                     console.log("response : "+ response);
                     if (response.status === 200) {
@@ -154,5 +137,5 @@ function deleteJob(){
 }
 
 $(document).ready(function() {
-    modal(); // modal 함수 호출하여 이벤트 연결
+        serverModal();
 });

@@ -4,7 +4,7 @@ function modal(){
     $(".jobButton").on("click",function(){
         let jobId = $(this).data("mid");
         let jManage={ jobId : jobId}; // JSON 데이터
-
+        alert('확인');
         $.ajax({
             url : "/job/jobModal",
             type : "POST",
@@ -30,8 +30,9 @@ function modal(){
                 }
                 $('.hiddenJobId').val(response.data.jobId); // class 로 지정, id 는 고유의 것이라 여기서 밖에 사용 안됨
             },
-            error : function(){
-                console.log("로그 : 에러발생...");
+            error : function(request, status, error){
+                // console.log("로그 : 에러발생...");
+                console.log("code:"+request.status+"\n >>"+"message:"+request.responseText+"\n >>"+"error:"+error);
             }
         });
     });
@@ -55,22 +56,11 @@ function updateJob(){
         if(!update_confirm){
             return;
         }
-
-        $('#modalTitle').attr('contentEditable', false)
-        $('#modalDescription').attr('contentEditable', false)
-        $('#modalUrl').attr('contentEditable', false)
-        $('#modalParam').attr('contentEditable', false)
-        $('#modalStartDate').attr('contentEditable', false)
+        $('.modalJob').attr('contentEditable', false)
         $('#update_job').text('수정');
         $('#close_job').text('닫기');
     }else{
-        $('#modalTitle').attr('contentEditable', true)
-        $('#modalDescription').attr('contentEditable', true)
-        $('#modalUrl').attr('contentEditable', true)
-        $('#modalParam').attr('contentEditable', true)
-        $('.startDate').attr('contentEditable', true)
-        $('#modalStartDate').attr('contentEditable', true)
-
+        $('.modalJob').attr('contentEditable', true)
         $('#update_job').text('저장');
         $('#close_job').text('취소');
         return;

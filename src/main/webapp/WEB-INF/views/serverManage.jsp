@@ -26,51 +26,7 @@
 <body>
 
 
-<!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-        <img src="/resources/dist/img/nhLogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">NH 농협</span>
-    </a>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <!-- Sidebar Menu -->
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                     with font-awesome or any other icon font library -->
-                <li class="nav-item">
-                    <a href="/page/scheduleManage" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            스케쥴러 관리
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/page/scheduleLog" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            스케쥴러 로그
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            서버관리
-                        </p>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-</aside>
+<common:header/>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -108,21 +64,6 @@
                                 <div class="card-header">
 
                                     <h3 class="card-title">서버 목록</h3>
-
-                                    <div class="card-tools">
-                                        <div class="input-group">
-                                            <select class="form-control select2" >
-                                                <option>제목</option>
-                                                <option>내용</option>
-                                            </select>
-                                            <input type="text" name="table_search" class="form-control" placeholder="Search">
-                                            <div class="input-group-append">
-                                                <button type="submit" class="btn btn-default">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body table-responsive p-0" style="height: 500px;">
@@ -140,33 +81,14 @@
                                         <c:forEach var="serverList" items="${serverList}">
                                             <tr>
                                                 <c:if test="${serverList.useYn != 'n'}">
-                                                    <td><button type="button" class="jobButton" data-toggle="modal" data-target="#modal-lg"
+                                                    <td><button type="button" class="serverButton" data-toggle="modal" data-target="#modal-lg"
                                                                 data-mid="${serverList.serverId}" style="border: none; background-color: #fff; padding-left: 0; padding-top: 0; text-decoration: underline;  ">
-                                                            ${serverList.server_id}
+                                                            ${serverList.serverId}
                                                     </button></td>
                                                     <td>${serverList.serverName}</td>
+                                                    <td>${serverList.serverDesc}</td>
                                                     <td>${serverList.serverIp}</td>
-                                                    <c:choose>
-                                                        <c:when test="${jobList.jobStatus == 0}">
-                                                            <td><div class="bg-primary color-palette" style="width:34px"><span>준비</span></div></td>
-                                                        </c:when>
-                                                        <c:when test="${jobList.jobStatus == 1}">
-                                                            <td><div class="bg-warning color-palette" style="width:34px"><span>진행</span></div></td>
-                                                        </c:when>
-                                                        <c:when test="${jobList.jobStatus == 4}">
-                                                            <td><div class="bg-maroon color-palette" style="width:34px"><span>오류</span></div></td>
-                                                        </c:when>
-                                                        <c:when test="${jobList.jobStatus == 7}">
-                                                            <td><div class="bg-info color-palette" style="width:34px"><span>취소</span></div></td>
-                                                        </c:when>
-                                                        <c:when test="${jobList.jobStatus == 9}">
-                                                            <td><div class="bg-orange color-palette" style="width:49px"><span>재처리</span></div></td>
-                                                        </c:when>
-                                                        <c:when test="${jobList.jobStatus == 10}">
-                                                            <td><div class="bg-success color-palette" style="width:34px"><span>완료</span></div></td>
-                                                        </c:when>
-                                                    </c:choose>
-                                                    <td>${jobList.jobRegDate}</td>
+                                                    <td>${serverList.serverGroup}</td>
                                                 </c:if>
                                             </tr>
                                         </c:forEach>
@@ -183,7 +105,9 @@
 
 
                     <!--modal-->
-                    <common:modal/>
+                    <common:serverModal/>
+                    <!--footer-->
+                    <common:footer/>
 
 
                 </div>
@@ -196,7 +120,7 @@
                 <script src="/resources/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 
                 <!--scheduleManage-->
-                <script src="/resources/js/admin/scheduleManage.js"></script>
+                <script src="/resources/js/admin/serverManage.js"></script>
 
 
 </body>
